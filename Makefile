@@ -14,4 +14,4 @@ dist: $($(IN_PACKAGE)$(CONFIG))
 .PHONY: clean
 clean:
 	rm -rf $(join $(IN_PACKAGE),dist)
-	#ghc-pkg unregister heuler-rbk
+	ghc-pkg unregister heuler-rbk
