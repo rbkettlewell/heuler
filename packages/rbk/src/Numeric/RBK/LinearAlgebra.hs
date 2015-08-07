@@ -1,14 +1,24 @@
 module Numeric.RBK.LinearAlgebra (
-  toUpperTriangular,
+  (><),
   dotVector,
+  pPrintM,
   multiplyMM,
   multiplyMV,
   solveX,
+  toUpperTriangular,
   transpose
   )where
 
+import Data.List(splitAt)
+
+
+(><) :: (Fractional a) => Int -> Int -> [a] -> [[a]]
+(><) 1 n a = [a]
+(><) m n a =  ri : (><) (m-1) n rest
+  where (ri,rest) = splitAt n a
+
 absFractional :: (Ord a, Fractional a) => a -> a
-absFractional x = if x < 0.0 then -1.0 * x else x
+absFractional x = if x < 0.0 then 1.0 * x else x
 
 appendEndColumn :: (Num a, Ord a, Fractional a) => [[a]] -> [a] -> [[a]]
 appendEndColumn a b = map (\x -> fst x ++ [snd x]) $ zip a b
@@ -44,6 +54,10 @@ getSign piv fac
 
 getSubMatrix :: (Num a, Ord a, Fractional a) => [[a]] -> [[a]]
 getSubMatrix = map tail
+
+pPrintM :: (Show a , Fractional a) => [[a]] -> IO ()
+pPrintM = mapM_ (\x -> putStrLn . rowVecPrint $ x)
+  where rowVecPrint = concatMap (\x -> show x ++ "  ")
 
 splitFirstCol :: (Num a, Fractional a) => [[a]] -> ([a],[[a]])
 splitFirstCol (x:xs)
